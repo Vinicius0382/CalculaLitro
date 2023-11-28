@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, inicial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie-edge">
+	<link rel="stylesheet" type="text/css" href="styles/styles.css" />
+	<title>Consulte o pre&ccedil;o por litro</title>
+</head>
+<body>
+
+	<div class="container">
+		<h3>Consulte o pre&ccedil;o por litro</h3>
+		
+		Tamanho:
+		<select name="tamanho" id="tamanho" onclick="libera_valor(this)">
+			<option value="0">Escolha o tamanho</option>
+			<option value="0,269">Lata 269ml</option>
+			<option value="0,350">Lata 350ml</option>
+			<option value="0,300">Garrafinha 300ml</option>
+			<option value="0,355">Longneck 355ml</option>
+			<option value="0,473">Lat&atilde;o 473ml</option>
+			<option value="0,550">Lat&atilde;o 550ml</option>
+			<option value="0,600">Garrafa 600ml</option>
+		</select>
+
+		Pre&ccedil;o:
+		<input type="text" id="valor" onkeyup="formatarMoeda();" disabled >
+
+		Pre&ccedil;o por litro:
+		<input type="text" id="custo" name="custo" disabled>
+
+		<button type="button" class="calcular" id="calcular" name="calcular">Calcular</button>
+		<button type="button" class="limpar" id="limpar" name="limpar">Limpar</button>
+
+	</div>
+
+</body>	
+<script>
+function formatarMoeda() {
+  var elemento = document.getElementById('valor');
+  var valor = elemento.value;
+  
+  valor = valor + '';
+  valor = parseInt(valor.replace(/[\D]+/g,''));
+  valor = valor + '';
+  valor = valor.replace(/([0-9]{2})$/g, ",$1");
+
+  if (valor.length > 6) {
+    valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+  }
+
+  elemento.value = valor;
+}
+
+	function libera_valor(tamanho){
+		let value = tamanho.value;
+		let preco = document.getElementById("valor");
+
+		if(value == 0){
+			preco.disabled = true;
+		} else {
+			preco.disabled = false;
+		}
+	}
+
+	document.getElementById('calcular').addEventListener('click', function() {
+		
+		var valor = parseFloat(document.getElementById('valor').value.replace(/\,/, '.'));
+		var tamanho = parseFloat(document.getElementById('tamanho').value.replace(/\,/, '.'));
+		
+		var conta = valor / tamanho;
+		
+		var resultado = parseFloat(conta.toFixed(2));
+		
+		document.getElementById('custo').value = resultado;
+		
+		
+	});
+	
+	document.getElementById('limpar').addEventListener('click', function() {
+		document.getElementById('valor').value = "";
+		document.getElementById('tamanho').value = 0;
+		document.getElementById('custo').value = "";
+	});
+</script>	
